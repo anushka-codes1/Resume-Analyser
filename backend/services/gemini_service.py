@@ -1,5 +1,6 @@
 import google.generativeai as genai
 import os
+import json
 
 from dotenv import load_dotenv
 
@@ -12,25 +13,51 @@ model = genai.GenerativeModel(os.getenv("MODEL_NAME"))
 def analyze_resume_with_ai(resume_text):
 
     prompt = f"""
-    You are an expert ATS (Applicant Tracking System) resume analyzer.
+You are an expert ATS Resume Analyzer.
 
-    Analyze the following resume carefully.
+Analyze this resume and return ONLY valid JSON.
 
-    Provide:
+Resume:
+{resume_text}
 
-    1. ATS Score out of 100
-    2. Technical strengths
-    3. Missing skills
-    4. Weaknesses in the resume
-    5. Suggestions to improve
-    6. Best suitable roles for this candidate
+Return this exact JSON structure:
 
-    Format the response clearly with headings.
+{{
+  "ats_score": number,
+  "summary": "short summary",
+  "strengths": [
+    "point 1",
+    "point 2"
+  ],
+  "weaknesses": [
+    "point 1",
+    "point 2"
+  ],
+  "missing_keywords": [
+    "keyword1",
+    "keyword2"
+  ],
+  "suggestions": [
+    "suggestion1",
+    "suggestion2"
+  ],
+  "suitable_roles": [
+    "role1",
+    "role2"
+  ],
+  "final_verdict": "final verdict"
+}}
 
-    Resume:
-    {resume_text}
-    """
+Do not return markdown.
+Do not return explanations outside JSON.
+"""
 
+    # call the configured model to generate a response for the prompt
     response = model.generate_content(prompt)
+    response_text = response.text.strip()
 
-    return response.text
+    cleaned = response_text.replace("```json", "").replace("```", "")
+
+    result = json.loads(cleaned)
+
+    return result
