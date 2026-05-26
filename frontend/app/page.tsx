@@ -82,7 +82,7 @@ export default function Home() {
               </button>
 
               <p className="mt-3 text-xs text-zinc-500">
-                Accepted: PDF. We analyze content for ATS-friendliness and
+                Accepted format: "PDF" only. We analyze content for ATS-friendliness and
                 provide improvement tips.
               </p>
             </div>
