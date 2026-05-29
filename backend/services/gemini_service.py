@@ -1,14 +1,14 @@
-import google.generativeai as genai
 import os
-import json
-
+import google.generativeai as genai
 from dotenv import load_dotenv
 
 load_dotenv()
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-model = genai.GenerativeModel(os.getenv("MODEL_NAME"))
+model = genai.GenerativeModel(
+    os.getenv("MODEL_NAME", "gemini-2.5-flash")
+)
 
 def analyze_resume_with_ai(resume_text):
 
