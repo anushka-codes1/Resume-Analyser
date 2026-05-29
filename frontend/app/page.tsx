@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import axios from "axios";
 
 const API_BASE_URL =
-  "https://resume-analyser-nazr.onrender.com";
+  process.env.NEXT_PUBLIC_API_URL;
 
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
